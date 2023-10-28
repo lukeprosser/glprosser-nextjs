@@ -1,7 +1,9 @@
+import Container from '../container/Container';
+
 export default function About() {
   return (
     <section className="bg-stone-50">
-      <div className="container mx-auto px-6">
+      <Container>
         <div className="py-16 text-center text-lg">
           <p className="pb-4">
             Based in Cwmbran, South Wales, Gareth Prosser is an experienced
@@ -17,7 +19,7 @@ export default function About() {
             reliable service from consultation to completion.
           </p>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
