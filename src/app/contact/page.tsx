@@ -1,6 +1,6 @@
 'use client';
 
-import ContactForm from '../../../components/contact-form/ContactForm';
+import ContactForm from '../../components/contact-form/ContactForm';
 
 export default function Contact() {
   return (
