@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`h-screen flex flex-col justify-between ${inter.className} text-stone-900`}
+        className={`h-screen flex flex-col justify-between ${inter.className} bg-stone-50 text-stone-900`}
       >
         <Header />
         <div className="mb-auto">{children}</div>
