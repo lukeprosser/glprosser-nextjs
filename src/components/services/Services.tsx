@@ -1,13 +1,5 @@
 import Container from '../container/Container';
-
-const services = [
-  'extensions',
-  'conversions',
-  'conservatories',
-  'brickwork',
-  'patios',
-  'driveways',
-];
+import { services } from '@/lib/constants';
 
 const Service = ({ title }: { title: string }) => (
   <div
