@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
-import { RxDotFilled } from 'react-icons/rx';
 import { services as images } from '@/lib/constants';
 
+// Inspired by https://www.youtube.com/watch?v=tXlZCW26bto
 export default function Slider() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -13,11 +13,16 @@ export default function Slider() {
     setCurrentIndex(newIndex);
   };
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     const isLastSlide = currentIndex === images.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex]);
+
+  useEffect(() => {
+    const interval = setInterval(() => nextSlide(), 4000);
+    return () => clearInterval(interval);
+  }, [currentIndex, nextSlide]);
 
   return (
     <div className="h-[700px] w-full m-auto">
@@ -25,16 +30,16 @@ export default function Slider() {
         style={{
           backgroundImage: `url('/images/services/${images[currentIndex]}.jpg')`,
         }}
-        className="relative group w-full h-full bg-center bg-cover duration-500"
+        className="relative group w-full h-full bg-center bg-cover duration-[2000ms]"
       >
         <button
-          className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer"
+          className="lg:hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer"
           onClick={previousSlide}
         >
           <BsChevronCompactLeft size={30} />
         </button>
         <button
-          className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer"
+          className="lg:hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer"
           onClick={nextSlide}
         >
           <BsChevronCompactRight size={30} />
@@ -43,11 +48,13 @@ export default function Slider() {
           {images.map((image, index) => (
             <button
               key={image}
-              className="text-2xl text-white cursor-pointer"
+              className={`m-2 p-1 text-3xl cursor-pointer border-2 rounded-full ${
+                index === currentIndex
+                  ? 'bg-stone-300 border-black/80'
+                  : 'bg-black/40 border-black/10'
+              }`}
               onClick={() => setCurrentIndex(index)}
-            >
-              <RxDotFilled />
-            </button>
+            />
           ))}
         </div>
       </div>
