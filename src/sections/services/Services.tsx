@@ -1,4 +1,4 @@
-import Container from '../container/Container';
+import Container from '@/components/container/Container';
 import { services } from '@/lib/constants';
 
 const Service = ({ title }: { title: string }) => (
