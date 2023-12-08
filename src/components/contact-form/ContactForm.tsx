@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 
 export default function ContactForm() {
@@ -15,7 +16,7 @@ export default function ContactForm() {
     });
     // console.log('formData', formData);
 
-    await fetch('/api/mail', {
+    await fetch('/api/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
