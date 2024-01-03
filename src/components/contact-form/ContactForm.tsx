@@ -18,6 +18,7 @@ export default function ContactForm() {
   const [emailAddress, setEmailAddress] = useState('');
   const [message, setMessage] = useState('');
 
+  // Type reference: https://claritydev.net/blog/typescript-typing-form-events-in-react
   const handleSubmit = async (e: FormEvent<CustomForm>) => {
     e.preventDefault();
     const targetElements = e.currentTarget.elements;
@@ -42,45 +43,84 @@ export default function ContactForm() {
     }
   };
 
+  // TODO:
+  // - Error handling
+  // - Error styles
+
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="firstName">First Name</label>
-        <input
-          type="text"
-          name="firstName"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+      <div className="flex flex-wrap mb-6">
+        <div className="w-full md:w-1/2 md:pr-3 mb-6 md:mb-0">
+          <label
+            htmlFor="firstName"
+            className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+          >
+            First Name
+          </label>
+          <input
+            type="text"
+            name="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First name"
+            className="block w-full text-stone-700 border py-3 px-4"
+          />
+        </div>
+        <div className="w-full md:w-1/2 md:pl-3">
+          <label
+            htmlFor="lastName"
+            className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+          >
+            Last Name
+          </label>
+          <input
+            type="text"
+            name="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last name"
+            className="block w-full text-stone-700 border py-3 px-4"
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          type="text"
-          name="lastName"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="emailAddress">Email Address</label>
+      <div className="w-full mb-6">
+        <label
+          htmlFor="emailAddress"
+          className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+        >
+          Email Address
+        </label>
         <input
           type="email"
           name="emailAddress"
           value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
+          placeholder="Email address"
+          className="block w-full text-stone-700 border py-3 px-4 mb-3"
         />
       </div>
-      <div>
-        <label htmlFor="message">Message</label>
+      <div className="w-full mb-6">
+        <label
+          htmlFor="message"
+          className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+        >
+          Message
+        </label>
         <textarea
           name="message"
           rows={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          placeholder="Message"
+          className="block w-full text-stone-700 border py-3 px-4"
         />
       </div>
-      <button type="submit">Send</button>
+      <button
+        type="submit"
+        className="px-8 py-3 bg-red-600 uppercase text-sm text-stone-50 block ml-auto"
+      >
+        Submit
+      </button>
     </form>
   );
 }
