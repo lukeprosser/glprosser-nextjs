@@ -1,5 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+
+interface CustomElements extends HTMLFormControlsCollection {
+  emailAddress: HTMLInputElement;
+  firstName: HTMLInputElement;
+  lastName: HTMLInputElement;
+  message: HTMLInputElement;
+}
+
+interface CustomForm extends HTMLFormElement {
+  readonly elements: CustomElements;
+}
 
 export default function ContactForm() {
   const [firstName, setFirstName] = useState('');
@@ -7,23 +18,28 @@ export default function ContactForm() {
   const [emailAddress, setEmailAddress] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<CustomForm>) => {
     e.preventDefault();
-    const formData = {};
-    Array.from(e.currentTarget.elements).forEach((field) => {
-      if (!field.name) return;
-      formData[field.name] = field.value;
-    });
-    // console.log('formData', formData);
+    const targetElements = e.currentTarget.elements;
 
-    await fetch('/api/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    if (targetElements) {
+      const { emailAddress, firstName, lastName, message } = targetElements;
+      const formData = {
+        emailAddress: emailAddress.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
+        message: message.value,
+      };
+
+      await fetch('/api/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+    }
   };
 
   return (
