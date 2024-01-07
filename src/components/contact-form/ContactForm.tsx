@@ -44,7 +44,7 @@ export default function ContactForm() {
   };
 
   // TODO:
-  // - Error handling
+  // - Form handling library (e.g. React Hook Form)
   // - Error styles
 
   return (
@@ -53,7 +53,7 @@ export default function ContactForm() {
         <div className="w-full md:w-1/2 md:pr-3 mb-6 md:mb-0">
           <label
             htmlFor="firstName"
-            className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
           >
             First Name
           </label>
@@ -63,13 +63,15 @@ export default function ContactForm() {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             placeholder="First name"
+            required={true}
+            max={100}
             className="block w-full text-stone-700 border py-3 px-4"
           />
         </div>
         <div className="w-full md:w-1/2 md:pl-3">
           <label
             htmlFor="lastName"
-            className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
           >
             Last Name
           </label>
@@ -79,6 +81,8 @@ export default function ContactForm() {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             placeholder="Last name"
+            required={true}
+            max={100}
             className="block w-full text-stone-700 border py-3 px-4"
           />
         </div>
@@ -86,7 +90,7 @@ export default function ContactForm() {
       <div className="w-full mb-6">
         <label
           htmlFor="emailAddress"
-          className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+          className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
         >
           Email Address
         </label>
@@ -96,13 +100,15 @@ export default function ContactForm() {
           value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
           placeholder="Email address"
+          required={true}
+          max={100}
           className="block w-full text-stone-700 border py-3 px-4 mb-3"
         />
       </div>
       <div className="w-full mb-6">
         <label
           htmlFor="message"
-          className="block uppercase tracking-wide text-stone-700 text-xs font-bold mb-2"
+          className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
         >
           Message
         </label>
@@ -112,6 +118,8 @@ export default function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Message"
+          required={true}
+          maxLength={500}
           className="block w-full text-stone-700 border py-3 px-4"
         />
       </div>
