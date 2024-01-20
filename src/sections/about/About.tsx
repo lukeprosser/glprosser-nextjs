@@ -4,7 +4,7 @@ export default function About() {
   return (
     <section>
       <Container>
-        <div className="py-16 text-center text-lg">
+        <div className="py-16 md:py-20 md:text-lg text-center md:text-left font-light grid md:grid-cols-3 md:gap-6">
           <p className="mb-4">
             Based in Cwmbran, South Wales, Gareth Prosser is an experienced
             construction specialist, with over 20 years in the building
