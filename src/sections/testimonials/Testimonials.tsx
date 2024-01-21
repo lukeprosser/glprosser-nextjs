@@ -7,7 +7,7 @@ export default function Testimonials() {
     <section>
       <Container>
         <div className="mx-auto max-w-screen-lg py-16 text-center font-light text-lg grid md:grid-cols-2 justify-items-center gap-10 lg:gap-12">
-          <div className="h-full max-w-sm flex flex-col justify-between border border-stone-300 shadow-lg p-10 bg-white">
+          <div className="h-full max-w-sm flex flex-col justify-between border-b-2 border-red-500 shadow-lg p-10 bg-white">
             <p className="relative mb-6 italic">
               <ImQuotesLeft
                 size={30}
@@ -20,11 +20,11 @@ export default function Testimonials() {
                 className="absolute -bottom-2 -right-5 text-stone-200"
               />
             </p>
-            <p className="text-sm text-red-500 uppercase font-medium tracking-widest">
+            <p className="text-sm uppercase font-medium tracking-widest">
               Paul Murphy, MP
             </p>
           </div>
-          <div className="h-full max-w-sm flex flex-col justify-between border border-stone-300 shadow-lg p-10 bg-white">
+          <div className="h-full max-w-sm flex flex-col justify-between border-b-2 border-red-500 shadow-lg p-10 bg-white">
             <p className="relative mb-6 italic">
               <ImQuotesLeft
                 size={30}
@@ -37,7 +37,7 @@ export default function Testimonials() {
                 className="absolute -bottom-2 -right-5 text-stone-200"
               />
             </p>
-            <p className="text-sm text-red-500 uppercase font-medium tracking-widest">
+            <p className="text-sm uppercase font-medium tracking-widest">
               Sue Holroyd
             </p>
           </div>

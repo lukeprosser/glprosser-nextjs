@@ -3,10 +3,14 @@ import { services } from '@/lib/constants';
 
 const Service = ({ title }: { title: string }) => (
   <div
-    className="w-full h-64 bg-cover"
+    className="w-full h-64 bg-cover shadow-lg flex flex-col justify-end"
     style={{ backgroundImage: `url('/images/services/${title}.jpg')` }}
   >
-    <h3>{title.toUpperCase()}</h3>
+    <div className="bg-stone-700/60 py-2">
+      <h3 className="uppercase text-stone-50 font-light tracking-widest">
+        {title}
+      </h3>
+    </div>
   </div>
 );
 

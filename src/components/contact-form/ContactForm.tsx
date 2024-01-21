@@ -65,7 +65,7 @@ export default function ContactForm() {
             placeholder="First name"
             required={true}
             max={100}
-            className="block w-full text-stone-700 border py-3 px-4"
+            className="block w-full text-stone-700 border py-3 px-4 placeholder:text-stone-400"
           />
         </div>
         <div className="w-full md:w-1/2 md:pl-3">
@@ -83,7 +83,7 @@ export default function ContactForm() {
             placeholder="Last name"
             required={true}
             max={100}
-            className="block w-full text-stone-700 border py-3 px-4"
+            className="block w-full text-stone-700 border py-3 px-4 placeholder:text-stone-400"
           />
         </div>
       </div>
@@ -102,7 +102,7 @@ export default function ContactForm() {
           placeholder="Email address"
           required={true}
           max={100}
-          className="block w-full text-stone-700 border py-3 px-4 mb-3"
+          className="block w-full text-stone-700 border py-3 px-4 mb-3 placeholder:text-stone-400"
         />
       </div>
       <div className="w-full mb-6">
@@ -120,7 +120,7 @@ export default function ContactForm() {
           placeholder="Message"
           required={true}
           maxLength={500}
-          className="block w-full text-stone-700 border py-3 px-4"
+          className="block w-full text-stone-700 border py-3 px-4 placeholder:text-stone-400"
         />
       </div>
       <button
