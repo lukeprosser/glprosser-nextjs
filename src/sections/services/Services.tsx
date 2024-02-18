@@ -24,8 +24,8 @@ export default function Services() {
               <Service key={idx} title={service} />
             ))}
           </div>
-          <div>
-            <p className="mb-4">
+          <div className="mt-14 md:text-lg text-center md:text-left font-light grid md:grid-cols-2 md:gap-6">
+            <p className="mb-4 md:mb-0">
               As well as these core services, Gareth also provides bespoke
               quotations, working regularly with a highly skilled and trusted
               network of contractors and suppliers to assist with any project.
@@ -33,7 +33,7 @@ export default function Services() {
             <p>
               This includes all aspects of carpentry, plumbing, electrics and
               plastering, providing a comprehensive range of specialist services
-              while maintaining competitive costs.
+              while maintaining competitive prices.
             </p>
           </div>
         </div>
