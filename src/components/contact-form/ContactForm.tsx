@@ -1,134 +1,158 @@
 'use client';
-import { FormEvent, useState } from 'react';
 
-interface CustomElements extends HTMLFormControlsCollection {
-  emailAddress: HTMLInputElement;
-  firstName: HTMLInputElement;
-  lastName: HTMLInputElement;
-  message: HTMLInputElement;
-}
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-interface CustomForm extends HTMLFormElement {
-  readonly elements: CustomElements;
-}
+const schema = yup
+  .object({
+    firstName: yup.string().required('Please provide your first name.'),
+    lastName: yup.string().required('Please provide your last name.'),
+    emailAddress: yup
+      .string()
+      .email('Please enter a valid email address.')
+      .required('Please enter your email address.'),
+    message: yup
+      .string()
+      .min(50, 'Your message must be at least 50 characters long.')
+      .max(500, 'Your message must not be longer than 500 characters.')
+      .required('Please provide details about your enquiry.'),
+  })
+  .required();
+
+type FormData = yup.InferType<typeof schema>;
 
 export default function ContactForm() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [message, setMessage] = useState('');
+  const [sent, setSent] = useState(false);
+  const [sentError, setSentError] = useState(false);
 
-  // Type reference: https://claritydev.net/blog/typescript-typing-form-events-in-react
-  const handleSubmit = async (e: FormEvent<CustomForm>) => {
-    e.preventDefault();
-    const targetElements = e.currentTarget.elements;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      message: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
-    if (targetElements) {
-      const { emailAddress, firstName, lastName, message } = targetElements;
-      const formData = {
-        emailAddress: emailAddress.value,
-        firstName: firstName.value,
-        lastName: lastName.value,
-        message: message.value,
-      };
+  const onSubmit = async (data: FormData) => {
+    setSent(false);
+    setSentError(false);
 
-      await fetch('/api/send', {
+    if (data) {
+      const response = await fetch('/api/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
+
+      if (response.ok) {
+        setSent(true);
+        reset();
+      } else {
+        setSentError(true);
+      }
     }
   };
 
-  // TODO:
-  // - Form handling library (e.g. React Hook Form)
-  // - Error styles
-
   return (
-    <form method="post" onSubmit={handleSubmit}>
-      <div className="flex flex-wrap mb-6">
-        <div className="w-full md:w-1/2 md:pr-3 mb-6 md:mb-0">
+    <div>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-wrap mb-6">
+          <div className="w-full md:w-1/2 md:pr-3 mb-6 md:mb-0">
+            <label
+              htmlFor="firstName"
+              className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
+            >
+              First Name
+            </label>
+            <input
+              type="text"
+              {...register('firstName')}
+              placeholder="First name"
+              className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+                errors.firstName ? 'outline outline-red-500' : 'border'
+              }`}
+            />
+            <p className="mt-2 text-sm text-red-600">
+              {errors.firstName?.message}
+            </p>
+          </div>
+          <div className="w-full md:w-1/2 md:pl-3">
+            <label
+              htmlFor="lastName"
+              className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
+            >
+              Last Name
+            </label>
+            <input
+              type="text"
+              {...register('lastName')}
+              placeholder="Last name"
+              className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+                errors.lastName ? 'outline outline-red-500' : 'border'
+              }`}
+            />
+            <p className="mt-2 text-sm text-red-600">
+              {errors.lastName?.message}
+            </p>
+          </div>
+        </div>
+        <div className="w-full mb-8">
           <label
-            htmlFor="firstName"
+            htmlFor="emailAddress"
             className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
           >
-            First Name
+            Email Address
           </label>
           <input
-            type="text"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First name"
-            required={true}
-            max={100}
-            className="block w-full text-stone-700 border py-3 px-4 placeholder:text-stone-400"
+            type="email"
+            {...register('emailAddress')}
+            placeholder="Email address"
+            className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+              errors.emailAddress ? 'outline outline-red-500' : 'border'
+            }`}
           />
+          <p className="mt-2 text-sm text-red-600">
+            {errors.emailAddress?.message}
+          </p>
         </div>
-        <div className="w-full md:w-1/2 md:pl-3">
+        <div className="w-full mb-6">
           <label
-            htmlFor="lastName"
+            htmlFor="message"
             className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
           >
-            Last Name
+            Message
           </label>
-          <input
-            type="text"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Last name"
-            required={true}
-            max={100}
-            className="block w-full text-stone-700 border py-3 px-4 placeholder:text-stone-400"
+          <textarea
+            {...register('message')}
+            rows={4}
+            placeholder="Message"
+            className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+              errors.message ? 'outline outline-red-500' : 'border'
+            }`}
           />
+          <p className="mt-2 text-sm text-red-600">{errors.message?.message}</p>
         </div>
-      </div>
-      <div className="w-full mb-6">
-        <label
-          htmlFor="emailAddress"
-          className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
+        <button
+          type="submit"
+          className="px-8 py-3 bg-red-600 uppercase text-sm text-stone-50 block ml-auto"
         >
-          Email Address
-        </label>
-        <input
-          type="email"
-          name="emailAddress"
-          value={emailAddress}
-          onChange={(e) => setEmailAddress(e.target.value)}
-          placeholder="Email address"
-          required={true}
-          max={100}
-          className="block w-full text-stone-700 border py-3 px-4 mb-3 placeholder:text-stone-400"
-        />
-      </div>
-      <div className="w-full mb-6">
-        <label
-          htmlFor="message"
-          className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
-        >
-          Message
-        </label>
-        <textarea
-          name="message"
-          rows={4}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Message"
-          required={true}
-          maxLength={500}
-          className="block w-full text-stone-700 border py-3 px-4 placeholder:text-stone-400"
-        />
-      </div>
-      <button
-        type="submit"
-        className="px-8 py-3 bg-red-600 uppercase text-sm text-stone-50 block ml-auto"
-      >
-        Submit
-      </button>
-    </form>
+          Submit
+        </button>
+      </form>
+      {sent ? <p>Enquiry sent!</p> : null}
+      {sentError ? <p>There was a problem</p> : null}
+    </div>
   );
 }
