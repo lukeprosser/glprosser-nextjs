@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ImSpinner3 } from 'react-icons/im';
+import Button from '../button/Button';
 
 const schema = yup
   .object({
@@ -23,12 +23,6 @@ const schema = yup
   .required();
 
 type FormData = yup.InferType<typeof schema>;
-
-const Spinner = ({ size }: { size: number }) => (
-  <div className="w-full flex items-center justify-center">
-    <ImSpinner3 size={size} className="animate-spin" />
-  </div>
-);
 
 const Dialogue = ({
   success,
@@ -180,15 +174,7 @@ export default function ContactForm() {
           />
           <p className="mt-2 text-sm text-red-600">{errors.message?.message}</p>
         </div>
-        <button
-          type="submit"
-          className={`w-[115px] h-[45px] px-8 py-3 uppercase text-sm shadow-md bg-red-600 text-stone-50 block ml-auto ${
-            loading ? 'opacity-60' : ''
-          }`}
-          disabled={loading}
-        >
-          {loading ? <Spinner size={20} /> : 'Submit'}
-        </button>
+        <Button type="submit" loading={loading} text="Submit" />
       </form>
       {sent && !sentError ? (
         <Dialogue

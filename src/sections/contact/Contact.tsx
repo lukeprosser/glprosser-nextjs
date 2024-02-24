@@ -3,7 +3,7 @@ import Container from '@/components/container/Container';
 
 export default async function Contact() {
   return (
-    <section className="bg-stone-200">
+    <section id="contact-form" className="bg-stone-200">
       <Container>
         <div className="max-w-3xl mx-auto py-16">
           <ContactForm />
