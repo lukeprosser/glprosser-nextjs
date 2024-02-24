@@ -179,7 +179,7 @@ export default function ContactForm() {
       {sent && !sentError ? (
         <Dialogue
           success={true}
-          message="Thank you for your enquiry, Gareth will be in touch as soon aspossible."
+          message="Thank you for your enquiry, Gareth will be in touch as soon as possible."
         />
       ) : null}
       {sentError ? (
