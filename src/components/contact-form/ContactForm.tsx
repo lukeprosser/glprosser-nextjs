@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { ImSpinner3 } from 'react-icons/im';
 
 const schema = yup
   .object({
@@ -23,7 +24,35 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
+const Spinner = ({ size }: { size: number }) => (
+  <div className="w-full flex items-center justify-center">
+    <ImSpinner3 size={size} className="animate-spin" />
+  </div>
+);
+
+const Dialogue = ({
+  success,
+  message,
+}: {
+  success: boolean;
+  message: string;
+}) => (
+  <div
+    className={`mt-10 border-2  px-6 py-8 text-center ${
+      success
+        ? 'border-emerald-500 bg-emerald-100'
+        : 'border-red-500 bg-red-100'
+    }`}
+  >
+    <h3 className="mb-4 font-semibold text-lg">
+      {success ? 'Success' : 'Error'}
+    </h3>
+    <p className="font-light">{message}</p>
+  </div>
+);
+
 export default function ContactForm() {
+  const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [sentError, setSentError] = useState(false);
 
@@ -43,6 +72,7 @@ export default function ContactForm() {
   });
 
   const onSubmit = async (data: FormData) => {
+    setLoading(true);
     setSent(false);
     setSentError(false);
 
@@ -63,12 +93,14 @@ export default function ContactForm() {
         setSentError(true);
       }
     }
+
+    setLoading(false);
   };
 
   return (
     <div>
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-wrap mb-6">
+        <div className={`flex flex-wrap mb-6 ${loading ? 'opacity-60' : ''}`}>
           <div className="w-full md:w-1/2 md:pr-3 mb-6 md:mb-0">
             <label
               htmlFor="firstName"
@@ -80,9 +112,10 @@ export default function ContactForm() {
               type="text"
               {...register('firstName')}
               placeholder="First name"
-              className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+              className={`block w-full text-stone-700 py-3 px-4 shadow placeholder:text-stone-400 ${
                 errors.firstName ? 'outline outline-red-500' : 'border'
               }`}
+              disabled={loading}
             />
             <p className="mt-2 text-sm text-red-600">
               {errors.firstName?.message}
@@ -99,16 +132,17 @@ export default function ContactForm() {
               type="text"
               {...register('lastName')}
               placeholder="Last name"
-              className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+              className={`block w-full text-stone-700 py-3 px-4 shadow placeholder:text-stone-400 ${
                 errors.lastName ? 'outline outline-red-500' : 'border'
               }`}
+              disabled={loading}
             />
             <p className="mt-2 text-sm text-red-600">
               {errors.lastName?.message}
             </p>
           </div>
         </div>
-        <div className="w-full mb-8">
+        <div className={`w-full mb-8 ${loading ? 'opacity-60' : ''}`}>
           <label
             htmlFor="emailAddress"
             className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
@@ -119,15 +153,16 @@ export default function ContactForm() {
             type="email"
             {...register('emailAddress')}
             placeholder="Email address"
-            className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+            className={`block w-full text-stone-700 py-3 px-4 shadow placeholder:text-stone-400 ${
               errors.emailAddress ? 'outline outline-red-500' : 'border'
             }`}
+            disabled={loading}
           />
           <p className="mt-2 text-sm text-red-600">
             {errors.emailAddress?.message}
           </p>
         </div>
-        <div className="w-full mb-6">
+        <div className={`w-full mb-8 ${loading ? 'opacity-60' : ''}`}>
           <label
             htmlFor="message"
             className="block uppercase tracking-wide text-stone-700 text-xs mb-2"
@@ -138,21 +173,35 @@ export default function ContactForm() {
             {...register('message')}
             rows={4}
             placeholder="Message"
-            className={`block w-full text-stone-700 py-3 px-4 placeholder:text-stone-400 ${
+            className={`block w-full text-stone-700 py-3 px-4 shadow placeholder:text-stone-400 ${
               errors.message ? 'outline outline-red-500' : 'border'
             }`}
+            disabled={loading}
           />
           <p className="mt-2 text-sm text-red-600">{errors.message?.message}</p>
         </div>
         <button
           type="submit"
-          className="px-8 py-3 bg-red-600 uppercase text-sm text-stone-50 block ml-auto"
+          className={`w-[115px] h-[45px] px-8 py-3 uppercase text-sm shadow-md bg-red-600 text-stone-50 block ml-auto ${
+            loading ? 'opacity-60' : ''
+          }`}
+          disabled={loading}
         >
-          Submit
+          {loading ? <Spinner size={20} /> : 'Submit'}
         </button>
       </form>
-      {sent ? <p>Enquiry sent!</p> : null}
-      {sentError ? <p>There was a problem</p> : null}
+      {sent && !sentError ? (
+        <Dialogue
+          success={true}
+          message="Thank you for your enquiry, Gareth will be in touch as soon aspossible."
+        />
+      ) : null}
+      {sentError ? (
+        <Dialogue
+          success={false}
+          message="Sorry, something went wrong while sending your enquiry. Please try again later."
+        />
+      ) : null}
     </div>
   );
 }
